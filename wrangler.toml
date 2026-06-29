@@ -1,0 +1,24 @@
+name = "padionix"
+compatibility_date = "2026-06-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# Custom domain — fill zone_id after DNS setup
+[[routes]]
+pattern = "padionix.com"
+zone_id = ""
+
+[[routes]]
+pattern = "www.padionix.com"
+zone_id = ""
+
+[env.production]
+vars = { NEXT_PUBLIC_SUPABASE_URL = "https://zjsnghrfyrnveiwgtivv.supabase.co", NEXT_PUBLIC_APP_URL = "https://padionix.com" }
+
+[env.preview]
+vars = { NEXT_PUBLIC_SUPABASE_URL = "https://zjsnghrfyrnveiwgtivv.supabase.co", NEXT_PUBLIC_APP_URL = "https://preview.padionix.pages.dev" }
+
+[[redirects]]
+from = "/*"
+to = "/"
+status = 200
