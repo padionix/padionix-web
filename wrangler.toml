@@ -13,10 +13,10 @@ pattern = "www.padionix.com"
 zone_id = ""
 
 [env.production]
-vars = { NEXT_PUBLIC_SUPABASE_URL = "https://zjsnghrfyrnveiwgtivv.supabase.co", NEXT_PUBLIC_APP_URL = "https://padionix.com" }
+vars = { NEXT_PUBLIC_SUPABASE_URL = "https://zjsnghrfyrnveiwgtivv.supabase.co", NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_lywj-sbrhSuqCKN99NPzqQ_G-gXqVLV", NEXT_PUBLIC_APP_URL = "https://padionix.com" }
 
 [env.preview]
-vars = { NEXT_PUBLIC_SUPABASE_URL = "https://zjsnghrfyrnveiwgtivv.supabase.co", NEXT_PUBLIC_APP_URL = "https://preview.padionix.pages.dev" }
+vars = { NEXT_PUBLIC_SUPABASE_URL = "https://zjsnghrfyrnveiwgtivv.supabase.co", NEXT_PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_lywj-sbrhSuqCKN99NPzqQ_G-gXqVLV", NEXT_PUBLIC_APP_URL = "https://padionix.pages.dev" }
 
 [[redirects]]
 from = "/*"

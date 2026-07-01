@@ -32,7 +32,7 @@ function isRateLimited(request: NextRequest): boolean {
 // ponytail: inline routing instead of a config object — fine until 20+ route defs
 const publicPagePaths = new Set(['/', '/login', '/register', '/forgot-password', '/auth/update-password'])
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Rate limit — apply to all routes
@@ -109,7 +109,7 @@ export async function middleware(request: NextRequest) {
   return supabaseResponse
 }
 
-export const config = {
+export const proxyConfig = {
   matcher: [
     '/((?!_next/static|_next/image|favicon.ico|build-progress.html).*)',
   ],

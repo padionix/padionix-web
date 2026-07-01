@@ -6,30 +6,35 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code')
   const type = searchParams.get('type')
 
-  // Recovery flow → redirect to update-password page after session exchange
-  const next = type === 'recovery' ? '/auth/update-password' : '/dashboard'
-
-  if (code) {
-    const response = NextResponse.redirect(`${origin}${next}`)
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll: () => request.cookies.getAll(),
-          setAll: (cookiesToSet) => {
-            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-            cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options)
-            )
-          },
-        },
-      },
-    )
-
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) return response
+  if (!code) {
+    console.error('[auth/callback] No code provided')
+    return NextResponse.redirect(`${origin}/login?error=no_code`)
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_error`)
+  const next = type === 'recovery' ? '/auth/update-password' : '/dashboard'
+
+  const response = NextResponse.redirect(`${origin}${next}`)
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll: (cookiesToSet) => {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          )
+        },
+      },
+    },
+  )
+
+  const { error } = await supabase.auth.exchangeCodeForSession(code)
+  if (error) {
+    console.error('[auth/callback] Exchange failed:', error.message)
+    return NextResponse.redirect(`${origin}/login?error=auth_callback_error`)
+  }
+
+  return response
 }

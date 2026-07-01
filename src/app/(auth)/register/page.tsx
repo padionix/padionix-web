@@ -13,6 +13,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ full_name: '', email: '', password: '', phone: '', group_name: '', role: 'farmer' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
   const [verifying, setVerifying] = useState(false)
   const router = useRouter()
 
@@ -55,11 +56,20 @@ export default function RegisterPage() {
   }
 
   async function handleGoogle() {
-    const supabase = createClient()
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
-    })
+    setError('')
+    setGoogleLoading(true)
+    try {
+      const supabase = createClient()
+      const { error: oauthErr } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/callback` },
+      })
+      if (oauthErr) setError(oauthErr.message)
+    } catch {
+      setError('Gagal memulai login Google. Coba lagi.')
+    } finally {
+      setGoogleLoading(false)
+    }
   }
 
   // Email verification screen
@@ -127,14 +137,16 @@ export default function RegisterPage() {
             <label className="text-sm font-medium">Nama Kelompok (opsional)</label>
             <Input placeholder="Kelompok Tani Makmur" value={form.group_name} onChange={update('group_name')} />
           </div>
-          {error && <p className="text-sm text-danger">{error}</p>}
+          {error && <p className="text-sm text-destructive">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>{loading ? 'Memproses...' : 'Daftar Gratis'}</Button>
         </form>
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
           <div className="relative flex justify-center text-xs"><span className="bg-card px-2 text-muted-foreground">Atau</span></div>
         </div>
-        <Button variant="outline" className="w-full" onClick={handleGoogle}>Daftar dengan Google</Button>
+        <Button variant="outline" className="w-full" onClick={handleGoogle} disabled={googleLoading}>
+          {googleLoading ? 'Memproses...' : 'Daftar dengan Google'}
+        </Button>
       </CardContent>
       <CardFooter className="justify-center text-sm">
         Sudah punya akun? <Link href="/login" className="text-primary font-medium ml-1">Masuk</Link>
