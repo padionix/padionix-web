@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Padionix — No Hama, No Drama",
   description:
     "Padionix adalah platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time. Solusi cerdas petani modern Indonesia.",
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

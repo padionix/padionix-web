@@ -41,7 +41,10 @@ export default function RegisterPage() {
       },
     })
 
-    if (authErr) { setError(authErr.message); setLoading(false); return }
+    if (authErr) {
+      const msg = typeof authErr.message === 'string' ? authErr.message : 'Terjadi kesalahan. Silakan coba lagi.'
+      setError(msg); setLoading(false); return
+    }
 
     // If user already has session (auto-confirm enabled) → redirect
     if (data.session) {
@@ -133,10 +136,12 @@ export default function RegisterPage() {
               <option value="dinas">Dinas Pertanian</option>
             </Select>
           </div>
+          {form.role === 'group' && (
           <div>
-            <label className="text-sm font-medium">Nama Kelompok (opsional)</label>
+            <label className="text-sm font-medium">Nama Kelompok</label>
             <Input placeholder="Kelompok Tani Makmur" value={form.group_name} onChange={update('group_name')} />
           </div>
+          )}
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>{loading ? 'Memproses...' : 'Daftar Gratis'}</Button>
         </form>

@@ -43,7 +43,7 @@ export default function LandingPage() {
                 <Link href="/register">
                   <Button size="lg" className="w-full sm:w-auto">Mulai Sekarang <ArrowRight className="h-4 w-4" /></Button>
                 </Link>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">Pelajari Lebih Lanjut</Button>
+                <Button variant="outline" size="lg" className="w-full sm:w-auto" onClick={() => document.getElementById('fitur')?.scrollIntoView({ behavior: 'smooth' })}>Pelajari Lebih Lanjut</Button>
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function LandingPage() {
         </section>
 
         {/* Features */}
-        <section className="py-16 md:py-24">
+        <section id="fitur" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <div className="mx-auto max-w-2xl text-center mb-12">
               <h2 className="font-display text-3xl font-bold">Fitur Unggulan</h2>
@@ -164,7 +164,9 @@ export default function LandingPage() {
                     {tier.features.map((f) => (
                       <div key={f} className="flex items-center gap-2 text-sm"><Check className="h-4 w-4 text-primary shrink-0" />{f}</div>
                     ))}
+                    <Link href="/register">
                     <Button variant={tier.popular ? 'default' : 'outline'} className="w-full mt-4">Pilih {tier.name}</Button>
+                    </Link>
                   </CardContent>
                 </Card>
               ))}
@@ -203,7 +205,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-8 text-center text-sm text-foreground/60">
         &copy; {new Date().getFullYear()} Padionix. Made for Indonesian farmers.
       </footer>
     </div>

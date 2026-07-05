@@ -53,7 +53,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t p-4 text-xs text-muted-foreground text-center">
+      <div className="border-t p-4 text-xs text-foreground/50 text-center">
         Padionix v0.1
       </div>
     </aside>
