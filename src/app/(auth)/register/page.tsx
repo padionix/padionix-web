@@ -43,7 +43,7 @@ export default function RegisterPage() {
 
     if (authErr) {
       // ponytail: Supabase returns different error shapes depending on failure type
-      const raw = authErr.message || authErr.msg || String(authErr)
+      const raw = authErr.message || String(authErr)
       let msg = 'Terjadi kesalahan. Silakan coba lagi.'
       if (typeof raw === 'string' && raw.length > 0) {
         if (raw.includes('already registered')) msg = 'Email sudah terdaftar. Silakan gunakan email lain atau masuk.'
