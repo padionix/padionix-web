@@ -43,7 +43,9 @@ export default function LandingPage() {
                 <Link href="/register">
                   <Button size="lg" className="w-full sm:w-auto">Mulai Sekarang <ArrowRight className="h-4 w-4" /></Button>
                 </Link>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto" onClick={() => document.getElementById('fitur')?.scrollIntoView({ behavior: 'smooth' })}>Pelajari Lebih Lanjut</Button>
+                <a href="#fitur" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-11 px-8 w-full sm:w-auto">
+                  Pelajari Lebih Lanjut
+                </a>
               </div>
             </div>
           </div>
