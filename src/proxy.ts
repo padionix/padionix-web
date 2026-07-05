@@ -30,7 +30,7 @@ function isRateLimited(request: NextRequest): boolean {
 }
 
 // ponytail: inline routing instead of a config object — fine until 20+ route defs
-const publicPagePaths = new Set(['/', '/login', '/register', '/forgot-password', '/auth/update-password'])
+const publicPagePaths = new Set(['/', '/login', '/register', '/forgot-password', '/auth/update-password', '/callback'])
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -86,6 +86,12 @@ export async function proxy(request: NextRequest) {
   // Not logged in + protected path → redirect to login
   const isProtected =
     pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/devices') ||
+    pathname.startsWith('/detections') ||
+    pathname.startsWith('/alerts') ||
+    pathname.startsWith('/reports') ||
+    pathname.startsWith('/map') ||
+    pathname.startsWith('/settings') ||
     pathname.startsWith('/admin') ||
     pathname.startsWith('/api/')
 
