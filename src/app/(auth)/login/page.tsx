@@ -23,7 +23,7 @@ export default function LoginPage() {
     const supabase = createClient()
     const { error: authErr } = await supabase.auth.signInWithPassword({ email, password })
     if (authErr) {
-      const raw = authErr.message || authErr.msg || String(authErr)
+      const raw = authErr.message || String(authErr)
       const msg = raw === 'Invalid login credentials' ? 'Email atau password salah'
         : (typeof raw === 'string' && raw.length > 0 ? raw : 'Terjadi kesalahan. Silakan coba lagi.')
       setError(msg)
