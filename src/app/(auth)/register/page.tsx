@@ -42,7 +42,16 @@ export default function RegisterPage() {
     })
 
     if (authErr) {
-      const msg = typeof authErr.message === 'string' ? authErr.message : 'Terjadi kesalahan. Silakan coba lagi.'
+      // ponytail: Supabase returns different error shapes depending on failure type
+      const raw = authErr.message || authErr.msg || String(authErr)
+      let msg = 'Terjadi kesalahan. Silakan coba lagi.'
+      if (typeof raw === 'string' && raw.length > 0) {
+        if (raw.includes('already registered')) msg = 'Email sudah terdaftar. Silakan gunakan email lain atau masuk.'
+        else if (raw.includes('valid email')) msg = 'Format email tidak valid.'
+        else if (raw.includes('at least 6')) msg = 'Password minimal 6 karakter.'
+        else if (raw.includes('violates not-null')) msg = 'Gagal membuat akun. Silakan coba lagi.'
+        else msg = raw
+      }
       setError(msg); setLoading(false); return
     }
 
