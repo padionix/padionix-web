@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Select } from '@/components/ui/select'
 import { createClient } from '@/lib/supabase/client'
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 export default function RegisterPage() {
+  useEffect(() => { document.title = 'Daftar | Padionix' }, [])
   const [form, setForm] = useState({ full_name: '', email: '', password: '', konfirmasi_password: '', phone: '', group_name: '', role: 'farmer' })
   const [terms, setTerms] = useState(false)
   const [error, setError] = useState('')
@@ -115,39 +117,41 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
-      <CardHeader className="text-center">
-        <div className="flex justify-center mb-2">
-          <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold">P</div>
-        </div>
-        <CardTitle>Daftar Padionix</CardTitle>
-        <CardDescription>Buat akun untuk memantau lahan Anda</CardDescription>
-      </CardHeader>
+    <div className="w-full max-w-sm">
+      <Breadcrumbs items={[{ label: 'Beranda', href: '/' }, { label: 'Daftar' }]} />
+      <Card className="w-full">
+        <CardHeader className="text-center">
+          <div className="flex justify-center mb-2">
+            <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold">P</div>
+          </div>
+          <CardTitle>Daftar Padionix</CardTitle>
+          <CardDescription>Buat akun untuk memantau lahan Anda</CardDescription>
+        </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-sm font-medium">Nama Lengkap</label>
-            <Input placeholder="Budi Santoso" value={form.full_name} onChange={update('full_name')} required />
+            <Input name="full_name" placeholder="Budi Santoso" value={form.full_name} onChange={update('full_name')} required />
           </div>
           <div>
             <label className="text-sm font-medium">Email</label>
-            <Input type="email" placeholder="nama@email.com" value={form.email} onChange={update('email')} required />
+            <Input type="email" name="email" placeholder="nama@email.com" value={form.email} onChange={update('email')} required />
           </div>
           <div>
             <label className="text-sm font-medium">Password</label>
-            <Input type="password" placeholder="Min. 6 karakter" value={form.password} onChange={update('password')} required minLength={6} />
+            <Input type="password" name="password" placeholder="Min. 6 karakter" value={form.password} onChange={update('password')} required minLength={6} />
           </div>
           <div>
             <label className="text-sm font-medium">Konfirmasi Password</label>
-            <Input type="password" placeholder="Ulangi password" value={form.konfirmasi_password} onChange={update('konfirmasi_password')} required minLength={6} />
+            <Input type="password" name="konfirmasi_password" placeholder="Ulangi password" value={form.konfirmasi_password} onChange={update('konfirmasi_password')} required minLength={6} />
           </div>
           <div>
             <label className="text-sm font-medium">No. Telepon</label>
-            <Input type="tel" placeholder="08123456789" value={form.phone} onChange={update('phone')} />
+            <Input type="tel" name="phone" placeholder="08123456789" value={form.phone} onChange={update('phone')} />
           </div>
           <div>
             <label className="text-sm font-medium">Saya mendaftar sebagai</label>
-            <Select value={form.role} onChange={update('role')}>
+            <Select name="role" value={form.role} onChange={update('role')}>
               <option value="farmer">Petani</option>
               <option value="group">Kelompok Tani</option>
               <option value="dinas">Dinas Pertanian</option>
@@ -180,5 +184,6 @@ export default function RegisterPage() {
         Sudah punya akun? <Link href="/login" className="text-primary font-medium ml-1">Masuk</Link>
       </CardFooter>
     </Card>
+    </div>
   )
 }

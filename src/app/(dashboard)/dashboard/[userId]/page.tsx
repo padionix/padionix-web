@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import type { Metadata } from 'next'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge, BadgeSensor } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -7,6 +8,8 @@ import { timeAgo } from '@/lib/utils/formatters'
 import { Cpu, BugPlay, Bell, Activity } from 'lucide-react'
 import { Suspense } from 'react'
 import DashboardClient from '../DashboardClient'
+
+export const metadata: Metadata = { title: 'Dashboard' }
 
 export default async function DashboardPage({ params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params

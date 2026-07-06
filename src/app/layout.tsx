@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import AnalyticsWrapper from "@/components/AnalyticsWrapper";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
+import ScrollAnimations from "@/components/ScrollAnimations";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const plusJakarta = Plus_Jakarta_Sans({
@@ -28,15 +32,17 @@ export const metadata: Metadata = {
     description: 'Platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time. Lindungi lahan Anda dengan teknologi cerdas.',
     url: '/',
     locale: 'id_ID',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Padionix — Platform IoT Pertanian AI' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Padionix — No Hama, No Drama',
     description: 'Platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time.',
+    images: ['/og-image.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
   },
 };
 
@@ -51,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">
+        <ThemeProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -71,6 +78,10 @@ export default function RootLayout({
           }}
         />
         {children}
+        <AnalyticsWrapper />
+        <WhatsAppWidget />
+        <ScrollAnimations />
+        </ThemeProvider>
       </body>
     </html>
   );

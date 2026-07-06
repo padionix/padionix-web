@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import Link from 'next/link'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 export default function ForgotPasswordPage() {
+  useEffect(() => { document.title = 'Lupa Password | Padionix' }, [])
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
@@ -32,7 +34,9 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+      <div className="w-full max-w-sm">
+        <Breadcrumbs items={[{ label: 'Beranda', href: '/' }, { label: 'Lupa Password' }]} />
+        <Card className="w-full">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-2">
             <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold">P</div>
@@ -66,6 +70,7 @@ export default function ForgotPasswordPage() {
           </CardFooter>
         )}
       </Card>
+      </div>
     </div>
   )
 }

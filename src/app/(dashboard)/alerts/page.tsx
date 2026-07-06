@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import type { Alert, AlertSeverity } from '@/lib/types'
 
 export default function AlertsPage() {
+  useEffect(() => { document.title = 'Alert | Padionix' }, [])
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<AlertSeverity | 'all' | 'unread'>('all')

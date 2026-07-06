@@ -13,6 +13,7 @@ import Link from 'next/link'
 import type { Device } from '@/lib/types'
 
 export default function DevicesPage() {
+  useEffect(() => { document.title = 'Perangkat | Padionix' }, [])
   const [devices, setDevices] = useState<Device[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')

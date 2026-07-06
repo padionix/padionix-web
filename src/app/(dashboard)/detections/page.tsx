@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import type { Detection } from '@/lib/types'
 
 export default function DetectionsPage() {
+  useEffect(() => { document.title = 'Deteksi | Padionix' }, [])
   const [detections, setDetections] = useState<Detection[]>([])
   const [loading, setLoading] = useState(true)
   const [filterStatus, setFilterStatus] = useState('all')

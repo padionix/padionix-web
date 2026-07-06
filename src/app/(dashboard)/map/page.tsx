@@ -28,6 +28,7 @@ const statusLabel: Record<string, string> = {
 }
 
 export default function MapPage() {
+  useEffect(() => { document.title = 'Peta | Padionix' }, [])
   const [devices, setDevices] = useState<Device[]>([])
   const [loading, setLoading] = useState(true)
   const [mapReady, setMapReady] = useState(false)

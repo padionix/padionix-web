@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 export default function UpdatePasswordPage() {
+  useEffect(() => { document.title = 'Update Password | Padionix' }, [])
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
@@ -34,7 +36,9 @@ export default function UpdatePasswordPage() {
 
   if (done) {
     return (
-      <Card className="w-full max-w-sm text-center">
+      <div className="w-full max-w-sm">
+        <Breadcrumbs items={[{ label: 'Beranda', href: '/' }, { label: 'Update Password' }]} />
+        <Card className="w-full text-center">
         <CardHeader>
           <div className="rounded-full bg-success/10 w-16 h-16 flex items-center justify-center mx-auto mb-2">
             <svg className="h-8 w-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,11 +49,14 @@ export default function UpdatePasswordPage() {
           <CardDescription>Password Anda berhasil diubah. Mengarahkan ke dashboard...</CardDescription>
         </CardHeader>
       </Card>
+      </div>
     )
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <div className="w-full max-w-sm">
+      <Breadcrumbs items={[{ label: 'Beranda', href: '/' }, { label: 'Update Password' }]} />
+      <Card className="w-full">
       <CardHeader className="text-center">
         <div className="flex justify-center mb-2">
           <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold">P</div>
@@ -86,5 +93,6 @@ export default function UpdatePasswordPage() {
         </form>
       </CardContent>
     </Card>
+    </div>
   )
 }

@@ -51,6 +51,7 @@ interface SummaryData {
 }
 
 export default function ReportsPage() {
+  useEffect(() => { document.title = 'Laporan | Padionix' }, [])
   const [tab, setTab] = useState<Tab>('ringkasan')
   const [summary, setSummary] = useState<SummaryData | null>(null)
   const [loading, setLoading] = useState(true)

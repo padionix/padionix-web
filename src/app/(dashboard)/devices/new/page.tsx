@@ -5,12 +5,13 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Copy, Check } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewDevicePage() {
+  useEffect(() => { document.title = 'Tambah Perangkat | Padionix' }, [])
   const [form, setForm] = useState({ name: '', description: '', location_name: '', latitude: '', longitude: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

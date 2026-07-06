@@ -11,6 +11,7 @@ import { User, Bell, Shield } from 'lucide-react'
 type Tab = 'profile' | 'notifications' | 'security'
 
 export default function SettingsPage() {
+  useEffect(() => { document.title = 'Pengaturan | Padionix' }, [])
   const [tab, setTab] = useState<Tab>('profile')
   const [profile, setProfile] = useState({ full_name: '', phone: '', group_name: '' })
   const [loading, setLoading] = useState(true)

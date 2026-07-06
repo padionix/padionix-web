@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Breadcrumbs from '@/components/Breadcrumbs'
 
 export default function LoginPage() {
+  useEffect(() => { document.title = 'Masuk | Padionix' }, [])
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -60,7 +62,9 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="w-full max-w-sm">
+    <div className="w-full max-w-sm">
+      <Breadcrumbs items={[{ label: 'Beranda', href: '/' }, { label: 'Masuk' }]} />
+      <Card className="w-full">
       <CardHeader className="text-center">
         <div className="flex justify-center mb-2">
           <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold">P</div>
@@ -69,17 +73,17 @@ export default function LoginPage() {
         <CardDescription>Masukkan email dan password Anda</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form method="post" onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-sm font-medium">Email</label>
-            <Input type="email" placeholder="nama@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <Input type="email" name="email" placeholder="nama@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div>
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Password</label>
+            <label className="text-sm font-medium">Password</label>
+            <Input type="password" name="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <div className="flex justify-end mt-1">
               <Link href="/forgot-password" className="text-xs text-primary hover:underline">Lupa password?</Link>
             </div>
-            <Input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>{loading ? 'Memproses...' : 'Masuk'}</Button>
@@ -96,5 +100,6 @@ export default function LoginPage() {
         Belum punya akun? <Link href="/register" className="text-primary font-medium ml-1">Daftar</Link>
       </CardFooter>
     </Card>
+    </div>
   )
 }
