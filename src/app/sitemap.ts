@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://padionix-web.padionix1.workers.dev'
+  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://padionix-web.vercel.app'
 
   return [
     { url: base, lastModified: new Date(), changeFrequency: 'monthly', priority: 1.0 },

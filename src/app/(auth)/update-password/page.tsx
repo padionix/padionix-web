@@ -25,9 +25,11 @@ export default function UpdatePasswordPage() {
     const supabase = createClient()
     const { error: updateErr } = await supabase.auth.updateUser({ password })
     if (updateErr) { setError(updateErr.message); setLoading(false); return }
+    const { data: { user } } = await supabase.auth.getUser()
+    const userId = user?.id
     setDone(true)
     setLoading(false)
-    setTimeout(() => router.push('/dashboard'), 3000)
+    setTimeout(() => router.push(userId ? `/dashboard/${userId}` : '/dashboard'), 3000)
   }
 
   if (done) {

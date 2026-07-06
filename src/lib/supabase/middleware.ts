@@ -7,7 +7,7 @@ export async function updateSession(request: NextRequest) {
 
   // ponytail: skip auth check if no Supabase config (dev/setup mode)
   if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('placeholder') || supabaseUrl.includes('xxxxxxxx')) {
-    return NextResponse.next({ request })
+    return { user: null, response: NextResponse.next({ request }) }
   }
 
   let supabaseResponse = NextResponse.next({ request })
@@ -18,11 +18,17 @@ export async function updateSession(request: NextRequest) {
         cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
         supabaseResponse = NextResponse.next({ request })
         cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options)
+          supabaseResponse.cookies.set(name, value, {
+            ...options,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+          })
         )
       },
     },
   })
-  await supabase.auth.getUser()
-  return supabaseResponse
+
+  const { data: { user } } = await supabase.auth.getUser()
+  return { user: user ?? null, response: supabaseResponse }
 }

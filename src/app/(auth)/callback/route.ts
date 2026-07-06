@@ -11,9 +11,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=no_code`)
   }
 
-  const next = type === 'recovery' ? '/auth/update-password' : '/dashboard'
-
-  const response = NextResponse.redirect(`${origin}${next}`)
+  const response = NextResponse.redirect(`${origin}/dashboard`)
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -30,11 +28,17 @@ export async function GET(request: NextRequest) {
     },
   )
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code)
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code)
   if (error) {
     console.error('[auth/callback] Exchange failed:', error.message)
     return NextResponse.redirect(`${origin}/login?error=auth_callback_error`)
   }
 
+  const userId = data?.user?.id
+  const next = type === 'recovery'
+    ? '/auth/update-password'
+    : (userId ? `/dashboard/${userId}` : '/dashboard')
+
+  response.headers.set('Location', `${origin}${next}`)
   return response
 }

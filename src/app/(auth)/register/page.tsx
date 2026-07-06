@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ full_name: '', email: '', password: '', phone: '', group_name: '', role: 'farmer' })
+  const [form, setForm] = useState({ full_name: '', email: '', password: '', konfirmasi_password: '', phone: '', group_name: '', role: 'farmer' })
+  const [terms, setTerms] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
@@ -26,6 +27,8 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
     if (form.password.length < 6) { setError('Password minimal 6 karakter'); return }
+    if (form.password !== form.konfirmasi_password) { setError('Konfirmasi password tidak cocok'); return }
+    if (!terms) { setError('Anda harus menyetujui Syarat & Ketentuan'); return }
     setLoading(true)
 
     const supabase = createClient()
@@ -57,7 +60,8 @@ export default function RegisterPage() {
 
     // If user already has session (auto-confirm enabled) → redirect
     if (data.session) {
-      router.push('/dashboard')
+      const userId = data.user?.id
+      router.push(userId ? `/dashboard/${userId}` : '/dashboard')
       router.refresh()
       return
     }
@@ -97,7 +101,7 @@ export default function RegisterPage() {
           <CardTitle>Cek Email Anda</CardTitle>
           <CardDescription>
             Kami telah mengirim tautan verifikasi ke <strong>{form.email}</strong>.
-            Klik tautan tersebut untuk mengaktifkan akun Anda.
+            Klik tautan tersebut untuk mengaktifkan akun Anda. Periksa juga folder spam jika tidak ditemukan.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -134,6 +138,10 @@ export default function RegisterPage() {
             <Input type="password" placeholder="Min. 6 karakter" value={form.password} onChange={update('password')} required minLength={6} />
           </div>
           <div>
+            <label className="text-sm font-medium">Konfirmasi Password</label>
+            <Input type="password" placeholder="Ulangi password" value={form.konfirmasi_password} onChange={update('konfirmasi_password')} required minLength={6} />
+          </div>
+          <div>
             <label className="text-sm font-medium">No. Telepon</label>
             <Input type="tel" placeholder="08123456789" value={form.phone} onChange={update('phone')} />
           </div>
@@ -151,6 +159,12 @@ export default function RegisterPage() {
             <Input placeholder="Kelompok Tani Makmur" value={form.group_name} onChange={update('group_name')} />
           </div>
           )}
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="terms" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="h-4 w-4 rounded border-border" required />
+            <label htmlFor="terms" className="text-sm text-muted-foreground">
+              Saya menyetujui <Link href="/terms" className="text-primary hover:underline">Syarat & Ketentuan</Link>
+            </label>
+          </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
           <Button type="submit" className="w-full" disabled={loading}>{loading ? 'Memproses...' : 'Daftar Gratis'}</Button>
         </form>

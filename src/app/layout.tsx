@@ -9,11 +9,35 @@ const plusJakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://padionix-web.vercel.app'
+
 export const metadata: Metadata = {
-  title: "Padionix — No Hama, No Drama",
+  title: {
+    default: "Padionix — No Hama, No Drama",
+    template: "%s | Padionix",
+  },
   description:
     "Padionix adalah platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time. Solusi cerdas petani modern Indonesia.",
   robots: { index: true, follow: true },
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: 'Padionix',
+    title: 'Padionix — No Hama, No Drama',
+    description: 'Platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time. Lindungi lahan Anda dengan teknologi cerdas.',
+    url: '/',
+    locale: 'id_ID',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Padionix — No Hama, No Drama',
+    description: 'Platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time.',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+  },
 };
 
 export const viewport: Viewport = {
@@ -26,7 +50,28 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id" className={`${inter.variable} ${plusJakarta.variable} h-full antialiased`}>
-      <body className="min-h-full font-sans">{children}</body>
+      <body className="min-h-full font-sans">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'Padionix',
+              applicationCategory: 'AgriculturalApplication',
+              operatingSystem: 'Web & IoT',
+              description: 'Platform IoT berbasis AI untuk monitoring dan deteksi hama tanaman secara real-time.',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'IDR',
+              },
+              author: { '@type': 'Organization', name: 'Padionix' },
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

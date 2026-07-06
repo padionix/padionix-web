@@ -21,7 +21,7 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
     const supabase = createClient()
-    const { error: authErr } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error: authErr } = await supabase.auth.signInWithPassword({ email, password })
     if (authErr) {
       const raw = authErr.message || String(authErr)
       const msg = raw === 'Invalid login credentials' ? 'Email atau password salah'
@@ -30,7 +30,15 @@ export default function LoginPage() {
       setLoading(false)
       return
     }
-    router.push('/dashboard')
+    const userId = data?.user?.id
+    const redirect = new URLSearchParams(window.location.search).get('redirect')
+    if (redirect) {
+      router.push(redirect)
+    } else if (userId) {
+      router.push(`/dashboard/${userId}`)
+    } else {
+      router.push('/dashboard')
+    }
     router.refresh()
   }
 
